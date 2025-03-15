@@ -2,7 +2,8 @@ import java.nio.file.Paths
 
 object Main extends App {
 
-  val s3Client = S3ClientProvider.s3Client
+  private val s3Client = S3ClientProvider.s3Client
+  private val presigner = S3ClientPersigner.presigner
 
   // S3 bucket and object key
   private val bucketName = "s3-file-uploading-sandbox"
@@ -23,7 +24,15 @@ object Main extends App {
     case util.Failure(exception) => println(s"File uploading failed: ${exception.getMessage}")
   }
 
+  private val presignUrl = S3ClientPresignGetter
+    .getPresignedUrl(
+      presigner = presigner,
+      bucketName = bucketName,
+      objectKey = objectKey
+    )
+
+  println(s"Presigned URL: $presignUrl")
+
   s3Client.close()
 
-  println("File uploaded successfully\n")
 }
