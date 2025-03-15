@@ -6,5 +6,6 @@ version := "1.0"
 
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-parser-combinators" % "2.3.0",
-  "software.amazon.awssdk" % "s3" % "2.31.0"
+  "software.amazon.awssdk" % "s3" % "2.31.0",
+  "ch.qos.logback" % "logback-classic" % "1.5.17"
 )
