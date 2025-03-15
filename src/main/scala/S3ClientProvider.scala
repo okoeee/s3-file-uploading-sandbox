@@ -1,14 +1,26 @@
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
+import software.amazon.awssdk.services.s3.presigner.S3Presigner
+
+object S3DefaultSettings {
+  val defaultRegion: Region = Region.US_EAST_1
+  val credentialsProvider: ProfileCredentialsProvider = ProfileCredentialsProvider.create("s3-file-uploading-sandbox-user")
+}
 
 object S3ClientProvider {
-  private val defaultRegion = Region.US_EAST_1
-  private val credentialsProvider = ProfileCredentialsProvider.create("s3-file-uploading-sandbox-user")
 
   lazy val s3Client: S3Client = S3Client
     .builder()
-    .region(defaultRegion)
-    .credentialsProvider(credentialsProvider)
+    .region(S3DefaultSettings.defaultRegion)
+    .credentialsProvider(S3DefaultSettings.credentialsProvider)
+    .build()
+}
+
+object S3ClientPersigner {
+  lazy val presigner: S3Presigner = S3Presigner
+    .builder()
+    .region(S3DefaultSettings.defaultRegion)
+    .credentialsProvider(S3DefaultSettings.credentialsProvider)
     .build()
 }
