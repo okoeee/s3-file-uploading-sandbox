@@ -4,10 +4,19 @@ import software.amazon.awssdk.services.s3.model.{PutObjectRequest, PutObjectResp
 import java.nio.file.Path
 import scala.util.Try
 
-object S3ClientUploader {
+trait S3ClientUploader {
+  def uploadFile(
+    bucketName: String,
+    objectKey: String,
+    filePath: Path
+  ): Try[PutObjectResponse]
+}
+
+class S3ClientUploaderImpl(
+  s3Client: S3Client
+) extends S3ClientUploader {
 
   def uploadFile(
-    s3Client: S3Client,
     bucketName: String,
     objectKey: String,
     filePath: Path

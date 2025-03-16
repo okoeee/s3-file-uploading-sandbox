@@ -1,13 +1,10 @@
-import Main.getClass
-import software.amazon.awssdk.services.s3.S3Client
-import software.amazon.awssdk.services.s3.presigner.S3Presigner
-
 import java.nio.file.Paths
+import scala.concurrent.ExecutionContext
 
 class BatchFileUploader(
-  s3Client:  S3Client,
-  presigner: S3Presigner
-) {
+  s3ClientUploader:    S3ClientUploader,
+  batchFileRepository: BatchFileRepository
+)(implicit ec: ExecutionContext) {
 
   // S3 bucket and object key
   private val bucketName = "s3-file-uploading-sandbox"
@@ -21,28 +18,29 @@ class BatchFileUploader(
     val resource = getClass.getResource("/sample.txt")
     val filePath = Paths.get(resource.toURI)
 
-    S3ClientUploader
-      .uploadFile(
-        s3Client = s3Client,
-        bucketName = bucketName,
-        objectKey = objectKey,
-        filePath = filePath
-      ) match {
-      case util.Success(_)         => println("File uploaded successfully")
-      case util.Failure(exception) => println(s"File uploading failed: ${exception.getMessage}")
-    }
+    for {
+      _ <- batchFileRepository.add(batchFile)
+      _ <- s3ClientUploader
+             .uploadFile(
+               bucketName = bucketName,
+               objectKey = objectKey,
+               filePath = filePath
+             ) match {
+             case util.Success(_)         =>
+               val updatedStatus = batchFile.copy(
+                 status = BatchFile.Status.UploadSuccess
+               )
+               println(s"Successfully uploaded: $objectKey")
+               batchFileRepository.update(updatedStatus)
+             case util.Failure(exception) =>
+               val updatedStatus = batchFile.copy(
+                 status = BatchFile.Status.UploadFailed
+               )
+               println(s"Failed to upload: $objectKey")
+               batchFileRepository.update(updatedStatus)
+           }
+    } yield ()
 
-    val presignUrl = S3ClientPresignGetter
-      .getPresignedUrl(
-        presigner = presigner,
-        bucketName = bucketName,
-        objectKey = objectKey
-      )
-
-    println(s"Presigned URL: $presignUrl")
-
-    s3Client.close()
-    presigner.close()
   }
 
 }
