@@ -10,6 +10,7 @@ case class BatchFile(
   userId:      Long,
   fileName:    String,
   period:      Period,
+  status:      BatchFile.Status,
   fileType:    BatchFile.FileType,
   fileSize:    Option[Long],
   generatedAt: LocalDateTime
@@ -30,8 +31,8 @@ object BatchFile {
   sealed trait Status { def value: String }
   object Status {
     case object Pending extends Status { def value = "pending" }
-    case object Generated extends Status { def value = "generated" }
-    case object Failed extends Status { def value = "failed" }
+    case object UploadSuccess extends Status { def value = "upload-success" }
+    case object UploadFailed extends Status { def value = "upload-failed" }
   }
 
 }
