@@ -1,5 +1,6 @@
-package sns
+package infrastructure.aws.sns
 
+import infrastructure.aws.sns.SnsPublisher
 import org.scalatest.freespec.AnyFreeSpec
 
 class SnsPublisherTest extends AnyFreeSpec {

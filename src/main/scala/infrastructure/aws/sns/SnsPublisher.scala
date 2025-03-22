@@ -1,4 +1,4 @@
-package sns
+package infrastructure.aws.sns
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider
 import software.amazon.awssdk.regions.Region
