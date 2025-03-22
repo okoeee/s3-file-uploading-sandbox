@@ -23,7 +23,7 @@ class BatchFileUploader(
     for {
       _ <- batchFileRepository.add(batchFile)
       _ <- s3ClientUploader
-             .uploadFile(
+             .uploadFileWithPath(
                bucketName = bucketName,
                objectKey = objectKey,
                filePath = filePath
