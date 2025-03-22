@@ -1,3 +1,5 @@
+import infrastructure.aws.s3.{S3ClientProvider, S3ClientUploaderImpl}
+
 import java.time.{LocalDate, LocalDateTime}
 
 object Main extends App {

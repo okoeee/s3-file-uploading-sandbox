@@ -1,4 +1,4 @@
-package lambda
+package infrastructure.aws.lambda
 
 import com.amazonaws.services.lambda.runtime.{Context, RequestHandler}
 import com.amazonaws.services.lambda.runtime.events.SNSEvent

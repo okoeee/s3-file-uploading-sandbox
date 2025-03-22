@@ -1,3 +1,4 @@
+import infrastructure.aws.s3.S3ClientUploader
 import org.mockito.ArgumentMatchers.{any, anyString, eq => eqTo}
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.freespec.AnyFreeSpec

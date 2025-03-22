@@ -1,3 +1,5 @@
+import infrastructure.aws.s3.S3ClientUploader
+
 import java.nio.file.Paths
 import scala.concurrent.ExecutionContext
 
