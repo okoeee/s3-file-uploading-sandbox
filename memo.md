@@ -12,3 +12,9 @@ CREATE TABLE uploaded_files (
   CHECK (file_status IN ('uploaded', 'failed', 'pending'))
 );
 ```
+
+## Lambda And SNS Setting
+1. Create Lambda function
+2. Set handler name (ex. lambda.FileUploadHandler::handleRequest)
+3. Create SNS topic
+4. Add SNS trigger to Lambda function
