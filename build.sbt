@@ -4,9 +4,12 @@ name := "s3-file-uploading-sandbox"
 organization := "ch.epfl.scala"
 version := "1.0"
 
+val awsSdkVersion = "2.31.6"
+
 libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-parser-combinators" % "2.3.0",
-  "software.amazon.awssdk" % "s3" % "2.31.0",
+  "software.amazon.awssdk" % "s3" % awsSdkVersion,
+  "software.amazon.awssdk" % "sns" % awsSdkVersion,
   "com.amazonaws" % "aws-lambda-java-core" % "1.2.3",
   "com.amazonaws" % "aws-lambda-java-events" % "3.15.0",
   "ch.qos.logback" % "logback-classic" % "1.5.17",
