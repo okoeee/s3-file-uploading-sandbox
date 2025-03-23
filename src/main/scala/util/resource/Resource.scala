@@ -18,15 +18,9 @@ object Resource {
     def close(resource: A): Unit
   }
   object Closer {
-    implicit val sourceCloser: Closer[Source] = new Closer[Source] {
-      def close(resource: Source): Unit = resource.close()
-    }
-    implicit val autoCloseableCloser: Closer[AutoCloseable] = new Closer[AutoCloseable] {
-      def close(resource: AutoCloseable): Unit = resource.close()
-    }
-    implicit val SnsClientCloser: Closer[SnsClient] = new Closer[software.amazon.awssdk.services.sns.SnsClient] {
-      def close(resource: SnsClient): Unit = resource.close()
-    }
+    implicit val sourceCloser: Closer[Source] = (resource: Source) => resource.close()
+    implicit val autoCloseableCloser: Closer[AutoCloseable] = (resource: AutoCloseable) => resource.close()
+    implicit val SnsClientCloser: Closer[SnsClient] = (resource: SnsClient) => resource.close()
   }
 
 }
