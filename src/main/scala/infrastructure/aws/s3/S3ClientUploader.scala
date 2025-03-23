@@ -15,10 +15,11 @@ trait S3ClientUploader {
     filePath: Path
   ): Try[PutObjectResponse]
 
-  def uploadWithFile(
+  def uploadWithZipFile(
     bucketName: String,
     objectKey: String,
-    file: Array[Byte]
+    file: Array[Byte],
+    contentType: String = "application/zip"
   ): Try[PutObjectResponse]
 }
 
@@ -41,16 +42,18 @@ class S3ClientUploaderImpl(
     }
   }
 
-  def uploadWithFile(
+  def uploadWithZipFile(
     bucketName: String,
     objectKey: String,
-    file: Array[Byte]
+    file: Array[Byte],
+    contentType: String = "application/zip"
   ): Try[PutObjectResponse] = {
     Try {
       val objectForRequest = PutObjectRequest
         .builder()
         .bucket(bucketName)
         .key(objectKey)
+        .contentType(contentType)
         .build()
       val requestBody = RequestBody.fromBytes(file)
       s3Client.putObject(objectForRequest, requestBody)
