@@ -10,6 +10,7 @@ libraryDependencies ++= Seq(
   "org.scala-lang.modules" %% "scala-parser-combinators" % "2.3.0",
   "software.amazon.awssdk" % "s3" % awsSdkVersion,
   "software.amazon.awssdk" % "sns" % awsSdkVersion,
+  "software.amazon.awssdk" % "apache-client" % awsSdkVersion,
   "com.amazonaws" % "aws-lambda-java-core" % "1.2.3",
   "com.amazonaws" % "aws-lambda-java-events" % "3.15.0",
   "ch.qos.logback" % "logback-classic" % "1.5.17",

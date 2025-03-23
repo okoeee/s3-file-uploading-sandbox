@@ -2,6 +2,7 @@ import infrastructure.aws.s3.S3ClientUploader
 
 import java.nio.file.Paths
 import scala.concurrent.ExecutionContext
+import scala.util.{Failure, Success}
 
 class BatchFileUploader(
   s3ClientUploader:    S3ClientUploader,
@@ -23,18 +24,18 @@ class BatchFileUploader(
     for {
       _ <- batchFileRepository.add(batchFile)
       _ <- s3ClientUploader
-             .uploadFile(
+             .uploadFileWithPath(
                bucketName = bucketName,
                objectKey = objectKey,
                filePath = filePath
              ) match {
-             case util.Success(_)         =>
+             case Success(_)         =>
                val updatedStatus = batchFile.copy(
                  status = BatchFile.Status.UploadSuccess
                )
                println(s"Successfully uploaded: $objectKey")
                batchFileRepository.update(updatedStatus)
-             case util.Failure(exception) =>
+             case Failure(exception) =>
                val updatedStatus = batchFile.copy(
                  status = BatchFile.Status.UploadFailed
                )

@@ -48,7 +48,7 @@ class BatchFileUploaderTest extends AnyFreeSpec with Matchers with MockitoSugar 
 
         // Set up the S3 upload mock
         when(
-          mockS3ClientUploader.uploadFile(
+          mockS3ClientUploader.uploadFileWithPath(
             bucketName = anyString(),
             objectKey = anyString(),
             filePath = any[Path]
@@ -73,7 +73,7 @@ class BatchFileUploaderTest extends AnyFreeSpec with Matchers with MockitoSugar 
 
         // Set up the S3 upload mock
         when(
-          mockS3ClientUploader.uploadFile(
+          mockS3ClientUploader.uploadFileWithPath(
             bucketName = anyString(),
             objectKey = anyString(),
             filePath = any[Path]
