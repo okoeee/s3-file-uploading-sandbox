@@ -1,29 +1,31 @@
 package infrastructure.aws.sns
 
 import org.scalatest.freespec.AnyFreeSpec
+import util.resource.Resource
 
 class SnsPublisherTest extends AnyFreeSpec {
 
   "Test Publish" in {
-    val publisher = new SnsPublisher()
+    val snsClient = SnsClientProvider.snsClient
 
-    val topicArn = "arn:aws:sns:us-east-1:149536463306:S3FileUploadingSandbox"
+    Resource.using(snsClient) { snsClient =>
+      val publisher = new SnsPublisher(snsClient)
 
-    val message =
-      """
-      |{
-      |  "message": "Hello, SNS!",
-      |}
-      |""".stripMargin
+      val topicArn = "arn:aws:sns:us-east-1:149536463306:S3FileUploadingSandbox"
 
-    val response = publisher.publish(topicArn, message)
+      val message =
+        """
+          |{
+          |  "message": "Hello, SNS!",
+          |}
+          |""".stripMargin
 
-    response match {
-      case scala.util.Success(value)     => assert(value.messageId() != null)
-      case scala.util.Failure(exception) => fail(exception)
+      val response = publisher.publish(topicArn, message)
+
+      response match {
+        case scala.util.Success(value) => assert(value.messageId() != null)
+      }
     }
-
-    publisher.close()
   }
 
 }
