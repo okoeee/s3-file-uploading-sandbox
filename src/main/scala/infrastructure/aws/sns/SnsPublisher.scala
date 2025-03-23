@@ -8,14 +8,8 @@ import software.amazon.awssdk.services.sns.model.{PublishRequest, PublishRespons
 import scala.util.Try
 
 class SnsPublisher(
-  region: Region = Region.US_EAST_1
+  snsClient: SnsClient
 ) {
-
-  private val snsClient = SnsClient
-    .builder()
-    .region(region)
-    .credentialsProvider(SnsPublisher.credentialsProvider)
-    .build()
 
   /** Publish a message to an SNS topic
     *
@@ -41,13 +35,5 @@ class SnsPublisher(
       snsClient.publish(requestBuilder.build())
     }
   }
-
-  def close(): Unit = {
-    snsClient.close()
-  }
-}
-object SnsPublisher {
-
-  private val credentialsProvider = ProfileCredentialsProvider.create("s3-file-uploading-sandbox-user")
 
 }
